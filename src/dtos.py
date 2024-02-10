@@ -34,6 +34,7 @@ class V1RequestBase(object):
     proxy: dict = None
     session: str = None
     session_ttl_minutes: int = None
+    waitForSelector: str = None
     headers: list = None  # deprecated v2.0.0, not used
     userAgent: str = None  # deprecated v2.0.0, not used
 

@@ -390,6 +390,15 @@ def _evil_logic(req: V1RequestBase, driver: WebDriver, method: str) -> Challenge
         logging.info("Challenge not detected!")
         res.message = "Challenge not detected!"
 
+    if req.waitForSelector is not None:
+        logging.debug("Waiting for selector")
+        try:
+            WebDriverWait(driver, SHORT_TIMEOUT).until(presence_of_element_located((By.CSS_SELECTOR, req.waitForSelector)))
+        except Exception:
+            logging.debug("Timeout waiting for the element selector")
+    else:
+        logging.debug("No selector passed")
+        
     challenge_res = ChallengeResolutionResultT({})
     challenge_res.url = driver.current_url
     challenge_res.status = 200  # todo: fix, selenium not provides this info
