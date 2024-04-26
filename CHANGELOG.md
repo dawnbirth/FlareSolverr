@@ -1,5 +1,31 @@
 # Changelog
 
+## v3.3.17 (2024/04/09)
+
+* Fix file descriptor leak in service on quit(). Thanks @zkulis
+
+## v3.3.16 (2024/02/28)
+
+* Fix of the subprocess.STARTUPINFO() call. Thanks @ceconelo
+* Add FreeBSD support. Thanks @Asthowen
+* Use headless configuration properly. Thanks @hashworks
+
+## v3.3.15 (2024/02/20)
+
+* Fix looping challenges
+
+## v3.3.14-hotfix2 (2024/02/17)
+
+* Hotfix 2 - bad Chromium build, instances failed to terminate
+
+## v3.3.14-hotfix (2024/02/17)
+
+* Hotfix for Linux build - some Chrome files no longer exist
+
+## v3.3.14 (2024/02/17)
+
+* Update Chrome downloads. Thanks @opemvbs
+
 ## v3.3.13 (2024/01/07)
 
 * Fix too many open files error

@@ -5,6 +5,7 @@ import re
 import shutil
 import urllib.parse
 import tempfile
+import sys
 
 from selenium.webdriver.chrome.webdriver import WebDriver
 import undetected_chromedriver as uc
@@ -138,7 +139,7 @@ def get_webdriver(proxy: dict = None) -> WebDriver:
 
     language = os.environ.get('LANG', None)
     if language is not None:
-        options.add_argument('--lang=%s' % language)
+        options.add_argument('--accept-lang=%s' % language)
 
     # Fix for Chrome 117 | https://github.com/FlareSolverr/FlareSolverr/issues/910
     if USER_AGENT is not None:
@@ -164,6 +165,8 @@ def get_webdriver(proxy: dict = None) -> WebDriver:
     # For normal headless mode:
     # options.add_argument('--headless')
 
+    options.add_argument("--auto-open-devtools-for-tabs")
+
     # if we are inside the Docker container, we avoid downloading the driver
     driver_exe_path = None
     version_main = None
@@ -180,9 +183,12 @@ def get_webdriver(proxy: dict = None) -> WebDriver:
 
     # downloads and patches the chromedriver
     # if we don't set driver_executable_path it downloads, patches, and deletes the driver each time
-    driver = uc.Chrome(options=options, browser_executable_path=browser_executable_path,
-                       driver_executable_path=driver_exe_path, version_main=version_main,
-                       windows_headless=windows_headless, headless=windows_headless)
+    try:
+        driver = uc.Chrome(options=options, browser_executable_path=browser_executable_path,
+                           driver_executable_path=driver_exe_path, version_main=version_main,
+                           windows_headless=windows_headless, headless=get_config_headless())
+    except Exception as e:
+        logging.error("Error starting Chrome: %s" % e)
 
     # save the patched driver to avoid re-downloads
     if driver_exe_path is None:
